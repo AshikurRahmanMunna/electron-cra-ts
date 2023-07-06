@@ -1,5 +1,5 @@
 {
-  "name": "uptechunt-desktop",
+  "name": "electron-cra",
   "version": "0.1.0",
   "private": true,
   "main": "./public/main/index.js",
@@ -11,7 +11,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "electron": "^25.2.0",
+    "cross-env": "^7.0.3",
     "electron-is-dev": "^2.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "react": "^18.2.0",
@@ -19,15 +19,47 @@
     "react-router-dom": "^6.14.1",
     "react-scripts": "5.0.1",
     "typescript": "*",
+    "wait-on": "^7.0.1",
+    "wait-port": "^1.0.4",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
+    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main/index.js",
+    "electron:start": "wait-port 3000 && electron .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.cra.electron",
+    "files": [
+      "dist/**/*",
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build_assets"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip",
+        "msi"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "license": "license.md",
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +83,8 @@
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "concurrently": "^8.2.0",
+    "electron": "^25.2.0",
+    "electron-builder": "^24.4.0",
     "eslint": "^8.44.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.8.0",
