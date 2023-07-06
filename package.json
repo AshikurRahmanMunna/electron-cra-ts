@@ -1,5 +1,5 @@
 {
-  "name": "electron-cra",
+  "name": "uptechunt-desktop",
   "version": "0.1.0",
   "private": true,
   "main": "./public/main/index.js",
@@ -36,7 +36,7 @@
   },
   "build": {
     "extends": null,
-    "appId": "com.cra.electron",
+    "appId": "com.desktop.uptechunt",
     "files": [
       "dist/**/*",
       "build/**/*",
